@@ -3,7 +3,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.apache.commons.lang3.CharEncoding;
-//import org.apache.tomcat.jni.File;
+//impor org.apache.tomcat.jni.File;
 //import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -96,7 +96,7 @@ public class Project {
             Vector<String> reWriteObjects = new Vector<String>();
             String readLineFromFile = bufferedReader.readLine();
             do {
-                if (readLineFromFile.trim().length() != 0) {
+                if (readLineFromFile.trim().length()!= 0) {
                     JSONParser jsonParser = new JSONParser();
                     Object object = jsonParser.parse(readLineFromFile);
                     JSONObject jsonObject = (JSONObject) object;
@@ -138,65 +138,29 @@ public class Project {
 
     }
 
-    @RequestMapping(value = "/deleteVehicle/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteVehicle(@PathVariable("id") int id) throws IOException {
-        //ResponseEntity<String> deleteEntity =null;
-        //PrintWriter printWriter=null;
-        //BufferedReader bufferedReader=null;
-        try {
-            File file = new File(getFilePath);
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedreader = new BufferedReader(fileReader);
-            //Vector<String> rewriteObjects = new Vector<String>();
-            String readtext = "";
-            boolean DeletedId = false;
-            ArrayList remainingObjects = new ArrayList();
-
-            /*String readLineFromFile = bufferedReader.readLine();
-            do {
-                if (readLineFromFile.trim().length() != 0) {
-                    JSONParser jsonParser = new JSONParser();
-                    Object parserObject = jsonParser.parse(readLineFromFile);
-                    JSONObject jsonObject = (JSONObject) parserObject;
-                    if (((Long) jsonObject.get("id")).intValue() == id) {
-                        check = 1;
-                    } else {
-                        rewriteObjects.add(readLineFromFile);
-                    }
-                }*/
-            while ((readtext = bufferedreader.readLine()) != null && readtext.trim().length() != 0) ;
-            JSONParser jsonParser = new JSONParser();
-            Object object = jsonParser.parse(readtext);
-            JSONObject jsonObject = (JSONObject) object;
-            if (!((Long) jsonObject.get(id) == id)) {
-                remainingObjects.add(readtext);
-            } else {
-                DeletedId = true;
-
+    @RequestMapping(value="/deleteVehicle/{id}",method=RequestMethod.DELETE)
+    public ResponseEntity<String> deleteVehicle(@PathVariable("id") int id) throws IOException{
+        try{
+            File file=new File("/Users/ThelmaAndrews/Desktop/inventory.txt");
+            FileReader filereader=new FileReader(file);
+            BufferedReader bufferedreader=new BufferedReader(filereader);
+            String readtext="";
+            boolean checkDeleteId=false;
+            ArrayList remainingObjects=new ArrayList();
+            while((readtext=bufferedreader.readLine())!= null && readtext.trim().length()!=0){
+                JSONParser jsonParser=new JSONParser();
+                Object object=jsonParser.parse(readtext);
+                JSONObject jsonObject=(JSONObject)object;
+                if(!((Long)jsonObject.get("id")==id)){
+                    remainingObjects.add(readtext);
+                }else{
+                    checkDeleteId=true;
+                }
             }
-            if (DeletedId == true) ;
-        } catch (Exception e) {
+            if(checkDeleteId==true);
+        }catch(Exception e){
             e.printStackTrace();
-
         }
-        return new ResponseEntity("DATA DELETED ", HttpStatus.OK);
+        return new ResponseEntity("NOT FOUND", HttpStatus.OK);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
